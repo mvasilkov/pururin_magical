@@ -1,0 +1,6 @@
+click
+requests
+html5lib
+lxml
+ipython
+awesome-slugify
