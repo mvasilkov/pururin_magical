@@ -6,7 +6,7 @@ import os
 import os.path as osp
 from slugify import slugify_filename
 from mimetypes import guess_extension
-from time import sleep
+from time import sleep as _sleep
 
 headers = {
     'Host': 'pururin.com',
@@ -57,8 +57,10 @@ def has_page(fsname, i):
 
 
 @click.command()
+@click.option('--sleep', default=1, help=('Delay requests for a given '
+                                          'number of seconds.'))
 @click.argument('url')
-def cli(url):
+def cli(sleep, url):
     robot = requests.Session()
     click.echo('loading %s' % url)
     res = robot.get(url, headers=headers)
@@ -75,7 +77,7 @@ def cli(url):
 
     thumbs_url = rel_url(get_one(html, x_thumbs))
     click.echo('pause')
-    sleep(1)
+    _sleep(sleep)
 
     click.echo('loading %s' % thumbs_url)
     headers['Referer'] = url
@@ -95,7 +97,7 @@ def cli(url):
             continue
 
         click.echo('pause')
-        sleep(1)
+        _sleep(sleep)
 
         click.echo('loading %s' % p)
         res = robot.get(p, headers=headers)
